@@ -5,7 +5,7 @@ import time
 from datetime import timedelta
 import data_helper
 import numpy as np
-#%matplotlib inline
+%matplotlib inline
 import matplotlib.pyplot as plt
 import random
 
