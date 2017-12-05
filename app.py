@@ -8,7 +8,6 @@ import chess_board_recognizer
 import uuid
 import tester
 
-
 if not os.path.exists('user_chessboards'):
     os.makedirs('user_chessboards')
 if not os.path.exists('user_tiles'):
