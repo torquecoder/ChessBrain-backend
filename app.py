@@ -1,6 +1,7 @@
 import os
 import glob
 from flask import Flask, request, redirect, url_for, render_template
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 import chess_board_recognizer
@@ -20,6 +21,7 @@ TILES_OUTPUT_FOLDER = 'user_tiles'
 INDEX = 'index.html'
 
 app = Flask(__name__)
+CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['TILES_OUTPUT_FOLDER'] = TILES_OUTPUT_FOLDER
 app.config['INDEX'] = INDEX
@@ -71,7 +73,7 @@ def upload_file():
 
         file = request.files['file']
 
-        if file.filename == '': 
+        if file.filename == '':
             flash('No image selected')
             return redirect(request.url)
 
