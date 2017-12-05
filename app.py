@@ -71,7 +71,7 @@ def upload_file():
 
         file = request.files['file']
 
-        if file.filename == '':
+        if file.filename == '': 
             flash('No image selected')
             return redirect(request.url)
 
