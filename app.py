@@ -1,12 +1,13 @@
 import os
 import glob
-from flask import Flask, request, redirect, url_for, render_template
-from flask_cors import CORS
+from flask import Flask, request, redirect, url_for, render_template, jsonify
+from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 import chess_board_recognizer
 import uuid
 import tester
+import json
 
 if not os.path.exists('user_chessboards'):
     os.makedirs('user_chessboards')
@@ -18,6 +19,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 UPLOAD_FOLDER = 'user_chessboards'
 TILES_OUTPUT_FOLDER = 'user_tiles'
 INDEX = 'index.html'
+BASE_URL = 'https://94ce710f.ngrok.io'
 
 app = Flask(__name__)
 CORS(app)
@@ -52,7 +54,7 @@ def createFEN(test_result):
             FEN += str(blanks)
             blanks = 0
         if rows != 0:
-            FEN += '/'
+            FEN += '_'
     return FEN
 
 @app.route('/uploads/<filename>')
@@ -61,6 +63,7 @@ def uploaded_file(filename):
 
 
 @app.route('/', methods=['GET', 'POST'])
+@cross_origin()
 def upload_file():
 
     if request.method == 'POST':
@@ -91,9 +94,10 @@ def upload_file():
                 tiles_array.append(tile)
             test_result = tester.testTiles(tiles_array)
             FEN = createFEN(test_result)
-            return render_template('analysis.html', fen = FEN)
 
-    #return render_template('index.html')
+            URL = BASE_URL + '/' + request.form['user_name'] + '/' + request.form['uniquekey'] + '/' + request.form['color'] + '/' + FEN
+            print(URL)
+            return redirect(URL, code=302)
 
 port = int(os.environ.get("PORT", 5000))
 app.run(host='0.0.0.0', port=port)
