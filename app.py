@@ -19,7 +19,6 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 UPLOAD_FOLDER = 'user_chessboards'
 TILES_OUTPUT_FOLDER = 'user_tiles'
 INDEX = 'index.html'
-BASE_URL = 'https://94ce710f.ngrok.io'
 
 app = Flask(__name__)
 CORS(app)
@@ -94,6 +93,7 @@ def upload_file():
                 tiles_array.append(tile)
             test_result = tester.testTiles(tiles_array)
             FEN = createFEN(test_result)
+            BASE_URL = 'https://' + request.form['servername'] + '.ngrok.io'
 
             URL = BASE_URL + '/' + request.form['user_name'] + '/' + request.form['uniquekey'] + '/' + request.form['color'] + '/' + FEN
             print(URL)
